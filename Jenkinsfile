@@ -1,30 +1,32 @@
-pipeline{
+pipeline {
     agent any
 
     environment {
         VENV = 'venv'
     }
 
-    stages{
-        stage(checkout){
+    stages {
+        stage('Checkout') {
             steps {
-                git branch: 'main', url: https://github.com/kulabakojosephine/june25-classdemo2.git'
+                git branch: 'main', url: 'https://github.com/EmmanuelOkitec/june25-classdemo2.git'
             }
         }
-        stage('Setup Virtual Environment'){
+
+        stage('Setup Virtual Environment') {
             steps {
                 sh '''
-                'python3 -m venv $VENV
-                 . $VENV/bin/activate
-                 pip install -r requirements.txt
+                    python3 -m venv $VENV
+                    . $VENV/bin/activate
+                    pip install -r requirements.txt
                 '''
             }
         }
-        stage('Run Tests'){
+
+        stage('Run Tests') {
             steps {
                 sh '''
-                . $VENV/bin/activate
-                pytest 
+                    . $VENV/bin/activate
+                    pytest
                 '''
             }
         }
