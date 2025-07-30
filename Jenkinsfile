@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git credentialsId: 'github-token', branch: 'main', url: 'https://github.com/EmmanuelOkitec/june25-classdemo2.git'
+                git branch: 'main', url: 'https://github.com/EmmanuelOkite/june25-classdemo2.git'
             }
         }
 
