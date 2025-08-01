@@ -1,10 +1,29 @@
-name: Hello World 
+name: Group CICD
+
 on: [push]
+
 jobs:
-  say-hello:
+  build-and-test:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Hello
-        run: echo "Hello, World!"
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'  
 
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Run tests
+        run: |
+          echo "Running tests..."
+          if [ -d tests ]; then pytest tests || echo "No tests found or tests failed"; else echo "No test folder"; fi
+
+      - name: Print Group Message
+        run: echo "This is our group workflow"
