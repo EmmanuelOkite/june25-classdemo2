@@ -3,8 +3,9 @@ name: Group CICD
 on: [push, pull_request]
 
 jobs:
-  build-and-test:
+  test:
     runs-on: ubuntu-latest
+    name: Run Tests
 
     steps:
       - name: Checkout code 
@@ -13,23 +14,44 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'  
+          python-version: '3.11'
 
-      - name: Install dependencies
+      - name: Create virtual environment and install dependencies
         run: |
-          python -m $VENV venv
-          source $VENV/bin/activate
-          pip install -r requirements.txt || echo "No requirements.txt found or installation failed"
-          pip install pylint
-
-          
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pylint
 
       - name: Run tests
         run: |
-          source $VENV/bin/activate
-          pytest 
+          source venv/bin/activate
+          pytest
 
-      - name: Run pylint
+  lint:
+    runs-on: ubuntu-latest
+    name: Run Linter (Pylint)
+    needs: test  # 🔥 This ensures lint runs only if test passes
+
+    steps:
+      - name: Checkout code 
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Create virtual environment and install dependencies
         run: |
-          source $VENV/bin/activate
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pylint
+
+      - name: Run Pylint
+        run: |
+          source venv/bin/activate
           pylint june25_classdemo2
