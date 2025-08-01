@@ -4,7 +4,7 @@ jobs:
   print_group-name:
   runs-on: ubuntu-latest
   steps:
-    - name: Print Group Name
+    - name: Print Group name
       run: echo "This is our group workflow"
       
 
