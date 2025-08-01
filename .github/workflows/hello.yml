@@ -20,6 +20,7 @@ jobs:
           python -m $VENV venv
           source $VENV/bin/activate
           pip install -r requirements.txt || echo "No requirements.txt found or installation failed"
+          pip install pylint
 
           
 
@@ -27,3 +28,8 @@ jobs:
         run: |
           source $VENV/bin/activate
           pytest 
+
+      - name: Run pylint
+        run: |
+          source $VENV/bin/activate
+          pylint june25_classdemo2
