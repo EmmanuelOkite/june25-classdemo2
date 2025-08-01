@@ -1,57 +1,9 @@
-name: Group CICD
-
-on: [push, pull_request]
-
+name: Hello World 
+on: [push]
 jobs:
-  test:
+  say-hello:
     runs-on: ubuntu-latest
-    name: Run Tests
-
     steps:
-      - name: Checkout code 
-        uses: actions/checkout@v4
+      -name: Hello
+        run: echo "Hello, World!"
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Create virtual environment and install dependencies
-        run: |
-          python -m venv venv
-          source venv/bin/activate
-          pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pytest pylint
-
-      - name: Run tests
-        run: |
-          source venv/bin/activate
-          pytest
-
-  lint:
-    runs-on: ubuntu-latest
-    name: Run Linter (Pylint)
-    needs: test  # 🔥 This ensures lint runs only if test passes
-
-    steps:
-      - name: Checkout code 
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Create virtual environment and install dependencies
-        run: |
-          python -m venv venv
-          source venv/bin/activate
-          pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pylint
-
-      - name: Run Pylint
-        run: |
-          source venv/bin/activate
-          pylint 

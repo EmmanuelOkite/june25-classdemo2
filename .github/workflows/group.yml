@@ -1,14 +1,57 @@
 name: Group CICD
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
-  print-group-name:
+  test:
     runs-on: ubuntu-latest
+    name: Run Tests
 
     steps:
-      - name: Checkout code
+      - name: Checkout code 
         uses: actions/checkout@v4
 
-      - name: Print Group Name
-        run: echo "This is our group work"
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Create virtual environment and install dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pylint
+
+      - name: Run tests
+        run: |
+          source venv/bin/activate
+          pytest
+
+  lint:
+    runs-on: ubuntu-latest
+    name: Run Linter (Pylint)
+    needs: test  # 🔥 This ensures lint runs only if test passes
+
+    steps:
+      - name: Checkout code 
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Create virtual environment and install dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pylint
+
+      - name: Run Pylint
+        run: |
+          source venv/bin/activate
+          pylint group.yml
