@@ -52,6 +52,6 @@ jobs:
           pip install pylint
 
       - name: Run Pylint
-        run: |
-          source venv/bin/activate
-          pylint 
+  run: |
+    source venv/bin/activate
+    pylint $(find . -name "*.py" ! -path "./venv/*")
