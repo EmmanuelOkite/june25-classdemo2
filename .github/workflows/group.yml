@@ -54,4 +54,4 @@ jobs:
       - name: Run Pylint
   run: |
     source venv/bin/activate
-    pylint $(find . -name "*.py" ! -path "./venv/*")
+    pylint $(find . -name "*.py" -not -path "./venv/*" -not -path "./.venv/*")
